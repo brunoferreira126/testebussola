@@ -196,6 +196,19 @@
   margin-top: 4px;
 }
 
+.clube-demo-acoes p {
+  grid-column: 1 / -1;
+  margin: 0;
+  border-radius: 6px;
+  padding: 10px 12px;
+  background: #f7f2ea;
+  color: #5f5456;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
 .clube-demo-acoes button {
   background: #251b1d;
   color: #fff;

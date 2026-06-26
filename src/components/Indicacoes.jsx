@@ -63,6 +63,19 @@ const PENDENTES_DEMO = [
   { id: "demo-2", nomeIndicado: "Clara N.", nomeOrigem: "Marina", criadoEm: "19 jun" },
 ];
 
+// Acessos de apresentacao. Eles so funcionam quando o Firebase ainda nao foi
+// configurado, por isso nao substituem as contas reais da equipe.
+const ACESSOS_DEMO = {
+  cliente: {
+    email: "cliente@bussola.com.br",
+    senha: "cliente2026",
+  },
+  atendimento: {
+    email: "atendimento@bussola.com.br",
+    senha: "bussola2026",
+  },
+};
+
 const FORMULARIO_INICIAL = {
   nome: "",
   whatsapp: "",
@@ -216,6 +229,35 @@ export default function Indicacoes() {
     setEnviando(true);
 
     try {
+      if (!firebaseConfigurado) {
+        const email = formulario.email.trim().toLowerCase();
+
+        if (modoCadastro) {
+          entrarDemonstracao("", formulario.nome || "Cliente");
+          setMensagem("Cadastro demonstrativo criado. No Firebase, ele será salvo de verdade.");
+          return;
+        }
+
+        if (
+          email === ACESSOS_DEMO.atendimento.email &&
+          formulario.senha === ACESSOS_DEMO.atendimento.senha
+        ) {
+          entrarDemonstracao("atendente", "Atendimento");
+          return;
+        }
+
+        if (
+          email === ACESSOS_DEMO.cliente.email &&
+          formulario.senha === ACESSOS_DEMO.cliente.senha
+        ) {
+          entrarDemonstracao();
+          return;
+        }
+
+        setMensagem("Use um dos acessos de teste informados abaixo do formulário.");
+        return;
+      }
+
       if (modoCadastro) {
         await cadastrarCliente(formulario);
         setMensagem("Cadastro criado. Seu código já está disponível no painel.");
@@ -428,6 +470,13 @@ export default function Indicacoes() {
 
             {!firebaseConfigurado && (
               <div className="clube-demo-acoes">
+                <p>
+                  Teste cliente: {ACESSOS_DEMO.cliente.email} / {ACESSOS_DEMO.cliente.senha}
+                </p>
+                <p>
+                  Teste atendimento: {ACESSOS_DEMO.atendimento.email} /{" "}
+                  {ACESSOS_DEMO.atendimento.senha}
+                </p>
                 <button type="button" onClick={() => entrarDemonstracao()}>
                   Ver como cliente
                 </button>
